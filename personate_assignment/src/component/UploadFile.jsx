@@ -118,15 +118,17 @@ const UploadFile = () => {
       <div className="mt-5 w-[50%]">
         {progress !== 0 && (
           <div className="w-[100%]">
-            <p className="text-gray-500 font-medium text-lg overflow-hidden">
+            <p className="font-medium text-lg bg-blue-500 text-white rounded-lg shadow-customShadow p-2 overflow-hidden">
                {progress!==100? `File ${selectedFile.name} is uploading...`:" Congratulation uploaded successfully🎉"} 
             </p>
-            <div className="mt-2">
-            <ProgressBar
-                completed={progress}
-                label={`${progress}% completed`}
-                bgColor="#19a7ce"
-              />
+            <div className="mt-2 ">
+              <ProgressBar 
+    completed={progress}
+    bgColor="#19a7ce"
+    labelColor="#ffffff"
+    label={`${progress}%`}
+    maxCompleted={100}
+    />
             </div>
           </div>
         )}
