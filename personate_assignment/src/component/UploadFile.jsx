@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import AWS from "aws-sdk";
 import ProgressBar from "@ramonak/react-progress-bar";
-
+import {RiUploadCloudLine } from "react-icons/ri"
 // Get the S3 bucket name and AWS credentials from environment variables
 const S3_BUCKET = process.env.REACT_APP_AWS_BUCKET_NAME;
 const ACCESS_KEY = process.env.REACT_APP_AWS_ACCESS_KEY;
@@ -48,7 +48,8 @@ const UploadFile = () => {
   const handleUpload = async () => {
     try {
       if (!selectedFile) {
-        return;
+        alert("Please drag and drop video")
+        return 
       }
 
       // Set the parameters for the file upload to S3
@@ -121,7 +122,7 @@ const UploadFile = () => {
                {progress!==100? `File ${selectedFile.name} is uploading...`:" Congratulation uploaded successfully🎉"} 
             </p>
             <div className="mt-2">
-              <ProgressBar
+            <ProgressBar
                 completed={progress}
                 label={`${progress}% completed`}
                 bgColor="#19a7ce"
@@ -129,14 +130,15 @@ const UploadFile = () => {
             </div>
           </div>
         )}
-        <div className="flex justify-center mt-4">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={handleUpload}
-          >
-            Upload video
-          </button>
-        </div>
+         <div className="flex justify-center mt-4">
+          
+      <button
+        className="bg-gradient-to-r from-blue-500 to-sky-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline flex items-center justify-center space-x-2"
+        onClick={handleUpload}
+      >
+        <RiUploadCloudLine fontSize="1.5rem" /><span>Upload video</span>
+      </button>
+    </div>
       </div>
     </section>
   );
