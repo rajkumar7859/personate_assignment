@@ -1,16 +1,16 @@
-#### Simple React App for Uploading MP4 Files to AWS S3
+## Simple React App for Uploading MP4 Files to AWS S3
 - This is a simple React app that allows users to upload MP4 files to an AWS S3 bucket using a drag-and-drop file drop zone. The app also displays a progress bar during the upload process and shows the uploaded video in a video element once the upload is complete.
 
-##### Access the App Hosted on AWS S3 ,Visit the following URL to access the app hosted on AWS S3:
+### Access the App Hosted on AWS S3 ,Visit the following URL to access the app hosted on AWS S3:
 
-### http://dragandropweb.s3-website.ap-south-1.amazonaws.com/
+#### http://dragandropweb.s3-website.ap-south-1.amazonaws.com/
 
 - This URL will take you to the React app that you have built, where you can drag and drop or browse for an mp4 file to upload to your AWS S3 bucket. The app will display a progress bar during the upload process, and once the upload is complete, the video file will be displayed in a video element above the drop zone.
 
 #### Image 
  documentation![Screenshot (89)](https://user-images.githubusercontent.com/103853109/228762778-6f91cc31-08e0-4e8b-9579-51caa500fa35.png)
 
-##### Prerequisites
+#### Prerequisites
 Before starting, you will need the following:
 An AWS account and an S3 bucket set up.
 Setup
@@ -30,10 +30,9 @@ makefile
 
 - Note: It's recommended to use an IAM user with only S3 permissions and not include your AWS credentials directly in the .env file. You can also use the pre-signed URL mechanism for better security.
 
-###### Usage
+#### Usage
 To start the app, run:
 - npm start
-
 This will start the development server and open the app in your browser at http://localhost:3000.
 
 To upload a file, simply drag and drop an MP4 file onto the drop zone or click the drop zone to browse for a file.
