@@ -3,16 +3,21 @@ import { useDropzone } from "react-dropzone";
 import AWS from "aws-sdk";
 import ProgressBar from "@ramonak/react-progress-bar";
 
-const S3_BUCKET =process.env.REACT_APP_AWS_BUCKET_NAME;
+// Get the S3 bucket name and AWS credentials from environment variables
+const S3_BUCKET = process.env.REACT_APP_AWS_BUCKET_NAME;
+const ACCESS_KEY = process.env.REACT_APP_AWS_ACCESS_KEY;
+const SECRET_KEY = process.env.REACT_APP_AWS_SECRET_KEY;
 const REGION = "ap-south-1";
 
+// Configure AWS SDK with the credentials
 AWS.config.update({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+  accessKeyId: ACCESS_KEY,
+  secretAccessKey: SECRET_KEY,
   signatureVersion: "v4",
 });
 
-const myBucket = new AWS.S3({
+// Create a new instance of the S3 service
+const s3 = new AWS.S3({
   params: { Bucket: S3_BUCKET },
   region: REGION,
 });
@@ -20,6 +25,8 @@ const myBucket = new AWS.S3({
 const UploadFile = () => {
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  // Use the useDropzone hook to handle file drop and selection
   const {
     getRootProps,
     getInputProps,
@@ -38,37 +45,44 @@ const UploadFile = () => {
     },
   });
 
-
-
   const handleUpload = async () => {
     try {
-      
       if (!selectedFile) {
         return;
       }
+
+      // Set the parameters for the file upload to S3
       const params = {
         Body: selectedFile,
         Bucket: S3_BUCKET,
         Key: selectedFile.name,
       };
-      myBucket
-        .putObject(params)
+
+      // Upload the file to S3 and track progress with a callback function
+      s3.putObject(params)
         .on("httpUploadProgress", (evt) => {
           setProgress(Math.round((evt.loaded / evt.total) * 100));
         })
         .send((err) => {
-          if (err) console.log("error", err);
+          if (err) {
+            console.log("Error uploading file", err);
+            alert("Network error");
+          }
         });
     } catch (error) {
-      console.log("Upload error " ,error);
+      console.log("Upload error", error);
     }
   };
 
+
   return (
-    <section className="flex flex-col items-center justify-center mt-10">
+    <section className="flex flex-col items-center justify-center mt-10 rounded-lg bg-white shadow-customShadow p-[1rem]">
+      <header className="text-2xl font-bold mb-4 w-[35%] bg-blue-500 text-white rounded-lg shadow-customShadow p-2">
+       Upload MP4 Video to S3
+      </header>
       <div
         {...getRootProps({
-          className: `cursor-pointer flex flex-col items-center justify-center w-80 h-80 border-4 border-dashed rounded-lg transition-all ${
+          className: `cursor-pointer text-2xl flex flex-col items-center justify-center w-[100%] h-60 border-4 border-dashed rounded-lg transition-all  ${
             isDragAccept ? "border-green-500" : "border-gray-400"
           }`,
         })}
@@ -100,11 +114,11 @@ const UploadFile = () => {
         </div>
       )}
 
-      <div className="mt-5">
+      <div className="mt-5 w-[50%]">
         {progress !== 0 && (
-          <div className="w-80">
-            <p className="text-gray-500 font-medium text-lg">
-               {progress!==100? `File {selectedFile.name} is uploading...`:"Uploading completed"} 
+          <div className="w-[100%]">
+            <p className="text-gray-500 font-medium text-lg overflow-hidden">
+               {progress!==100? `File ${selectedFile.name} is uploading...`:" Congratulation uploaded successfully🎉"} 
             </p>
             <div className="mt-2">
               <ProgressBar
@@ -128,4 +142,4 @@ const UploadFile = () => {
   );
 };
 
-export default UploadFile;
+export default UploadFile
